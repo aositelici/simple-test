@@ -5,39 +5,30 @@ function even_group_calculate_average(arr) {
 }
 
 function getEvenArray(array) {
-  var evenArray = array.filter(function(item, i) {
+  return array.filter(function(item, i) {
     return i % 2 !== 0;
-  })
-  .filter(function(item, i) {
+  }).filter(function(item, i) {
     return item % 2 === 0;
   });
-
-  if(evenArray.length === 0) {
-    evenArray.push(0);
-  }
-  return evenArray;
 }
 
 function calculateAverage(groups) {
   var result = [];
-  groups.forEach(function(group) {
-      var length = group.length;
-      var sum = group.reduce(function(a, b) {
-        return a + b;
-      });
-      result.push(sum/length);
-  });
-  return result;
+  for(var i in groups) {
+    var average = groups[i].reduce(function(a, b) {
+      return a + b;
+    })/groups[i].length;
+
+    result.push(average);
+  }
+  return result.length ? result : [0];
 }
 
 function getGroups(evenArray) {
-  var groups = [[], [], []];
-  evenArray.forEach(function(item) {
-    groups[item.toString().length - 1].push(item);
-  });
-
-  var filterGroups = groups.filter(function(group) {
-    return (group.length !== 0);
-  });
-  return filterGroups;
+  return evenArray.reduce(function(p, c) {
+    var length = c.toString().length;
+    p[length] = p[length] || [] ;
+    p[length].push(c);
+    return p;
+  }, {});
 }
